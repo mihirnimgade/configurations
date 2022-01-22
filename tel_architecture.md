@@ -99,6 +99,34 @@ Since we have to communicate with the radio and the cellular module over UART, w
 
 ### NMEA messages
 
+The general structure of an NMEA message is shown below:
+
+```
+$GPZDA,141644.00,22,03,2002,00,00*67<CR><LF>
+```
+
+Breaking that down:
+
+```
+       talker ID                                 checksum
+
+           │                                         │
+           │                                         │
+           ▼                                         ▼
+        $ GP  ZDA,    141644.00,22,03,2002,00,00    *67  <CR><LF>
+        ▲      ▲                  ▲                          ▲
+        │      │                  │                          │
+        │      │                  │                          │
+NMEA ───┘      │                  │                          │
+msg            │                  │                          │
+identifier     │
+               │               data field              carriage return
+               │        (delimited with commas)         + line feed
+
+            defines
+          msg contents
+```
+
 ### CAN messages
 
 ### IMU messages
