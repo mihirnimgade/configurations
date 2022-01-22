@@ -127,6 +127,8 @@ identifier     │
           msg contents
 ```
 
+These messages arrive from the GPS module and are already in a serial character stream. This means no additional processing is required before it is queued up for transmission over radio/cellular.
+
 ### CAN messages
 
 ### IMU messages
