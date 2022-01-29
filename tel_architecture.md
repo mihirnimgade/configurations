@@ -130,7 +130,7 @@ This CAN message struct would be transformed into the following character stream
 #402,1122AABBCCDDEEFF,E26A<CR><LF>
  ```
 
-Once transformation is complete, the message would be able to be transmitted to the cellular and radio module. 
+Once transformation is complete, the message would transmitted to the cellular and radio module over UART. 
 
 ### IMU messages
 
