@@ -117,21 +117,17 @@ struct CAN_msg {
 Since we're communicating with the cellular and radio modules over UART, this CAN message struct must be converted into a bit stream. For simplicity's sake, we will borrow the character stream format used by NMEA messages. That is, we will start with an identifier character ("#" for CAN messages) and delimit our fields with commas. An example of what a CAN message struct might look like is shown below:
 
 ```
-
 struct CAN_msg example_msg = {
     .msg_id = 0x402,
     .data = {0x11, 0x22, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF},
     .timestamp = 0xE26A
 }
-
 ```
 
 This CAN message struct would be transformed into the following character stream (not including the spaces):
 
  ```
-
 # 402 , 11 22 AA BB CC DD EE FF, E26A
-
  ```
 
 ### IMU messages
