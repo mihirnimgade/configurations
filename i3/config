@@ -35,14 +35,50 @@ exec --no-startup-id nm-applet
 # set background image
 exec --no-startup-id /usr/bin/feh --bg-scale ~/backgrounds/death_and_life_klimt.jpg
 
+# turn off screen saver
+exec --no-startup-id xset s off -dpms
+
 # workspace swapping
 bindsym Mod4+Shift+s exec ~/.config/i3/scripts/swap.sh
 
+# open file explorer
+bindsym Mod4+Shift+Return exec thunar
+
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+# set $refresh_i3status killall -SIGUSR1 i3status
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+
+## Volume control
+
+# Path to volume control, without trailing slash
+set $volumepath $HOME/.config/i3/scripts
+
+# Command for the status line
+#   ie: i3blocks, i3status
+set $statuscmd i3status
+
+# Signal used to update the status line
+#   i3blocks uses SIGRTMIN+10 by default
+#   i3status uses SIGUSR1 by default
+set $statussig SIGUSR1
+
+# Amount to increase/decrease volume as a percentage
+set $volumestep 5
+
+# pulseaudio-utils settings
+#
+# Symbolic name for sink (numeric index not supported)
+#   Recommended: comment out this setting and omit the -s option to use default sink
+#   List sink names: pacmd list-sinks | awk -F "[<>]" '/^\s+name: <.*>/{print $2}'
+#set $sinkname alsa_output.pci-0000_00_1b.0.analog-stereo
+
+# Using pulseaudio-utils (append "-s $sinkname" without quotes to override default sink)
+bindsym XF86AudioRaiseVolume exec --no-startup-id $volumepath/volume -p -n -t $statuscmd -u $statussig up $volumestep
+bindsym XF86AudioLowerVolume exec --no-startup-id $volumepath/volume -p -n -t $statuscmd -u $statussig down $volumestep
+bindsym XF86AudioMute        exec --no-startup-id $volumepath/volume -p -n -t $statuscmd -u $statussig mute
+
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # use these keys for focus, movement, and resize directions when reaching for
@@ -94,13 +130,13 @@ bindsym Mod4+Shift+Up move up
 bindsym Mod4+Shift+Right move right
 
 # split in horizontal orientation
-bindsym Mod4+equal split h
+bindsym Mod4+backslash split h
 
 # split in vertical orientation
-bindsym Mod4+backslash split v
+bindsym Mod4+equal split v
 
 # enter fullscreen mode for the focused container
-bindsym Mod4+grave fullscreen toggle
+bindsym Mod4+z fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym Mod4+s layout stacking
@@ -250,6 +286,15 @@ bindsym Mod4+f exec $HOME/.config/i3/scripts/i3-dtags.sh
 
 # Show tags, and move the current window to the one selected using dmenu.
 bindsym Mod4+Shift+f exec $HOME/.config/i3/scripts/i3-dtags-moveto.sh
+
+# <---- workspace switching ---->
+
+bindsym Mod4+x workspace back_and_forth
+
+# <---- changing display brightness ---->
+
+bindsym XF86MonBrightnessUp exec brightnessctl -d intel_backlight s 10%+
+bindsym XF86MonBrightnessDown exec brightnessctl -d intel_backlight s 10%-
 
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
